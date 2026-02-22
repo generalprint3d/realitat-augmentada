@@ -89,35 +89,32 @@ opacitySlider.addEventListener("input", function(e){
   osmLayer.setOpacity(e.target.value);
 });
 
-// 🔹 carregar automàticament l'únic KML de la carpeta
-fetch('.').then(r => r.text()).then(data => {
-    const match = data.match(/href="([^"]+\.kml)"/i);
-    if(!match){
-        alert("No s'ha trobat cap KML a la carpeta!");
-        return;
-    }
-    const kmlFile = match[1];
+// 🔹 carregar KML manualment
+// Nom del KML: escriu aquí el fitxer que tens dins la carpeta
+const KML_FILE = "01_Bellmunt_2500m.kml";
 
-    omnivore.kml(kmlFile)
-    .on('ready', function() {
-        var kmlLayer = this;
-        kmlLayer.eachLayer(function(layer){
-            if(layer.setStyle){
-                layer.setStyle({
-                    fill: false,
-                    fillOpacity: 0,
-                    color: "#FFAA00",
-                    weight: 3,
-                    opacity: 0.8
-                });
-            }
-        });
-        map.addLayer(kmlLayer);
-        map.fitBounds(kmlLayer.getBounds());
-    })
-    .on('error', function(e){
-        console.error("Error carregant KML", e);
+omnivore.kml(KML_FILE)
+.on('ready', function() {
+    var kmlLayer = this;
+
+    // sense color interior
+    kmlLayer.eachLayer(function(layer){
+        if(layer.setStyle){
+            layer.setStyle({
+                fill: false,
+                fillOpacity: 0,
+                color: "#FFAA00",
+                weight: 3,
+                opacity: 0.8
+            });
+        }
     });
+
+    map.addLayer(kmlLayer);
+    map.fitBounds(kmlLayer.getBounds());
+})
+.on('error', function(e){
+    console.error("Error carregant KML", e);
 });
 </script>
 
