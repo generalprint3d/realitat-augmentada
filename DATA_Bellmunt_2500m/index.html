@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Realitat-Augmentada - OSM</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: black;
+}
+
+/* 📷 càmera */
+#camera {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* 🗺️ mapa */
+#map {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background: transparent;
+}
+
+/* 🎚️ controls */
+#controls {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 999;
+  background: rgba(0,0,0,0.5);
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  font-family: sans-serif;
+}
+</style>
+</head>
+
+<body>
+
+<video id="camera" autoplay playsinline muted></video>
+<div id="map"></div>
+
+<div id="controls">
+Transparència mapa:
+<input type="range" id="opacity" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-omnivore/leaflet-omnivore.min.js"></script>
+
+<script>
+// =======================
+// 📷 activar càmera
+// =======================
+navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+.then(stream => {
+  document.getElementById("camera").srcObject = stream;
+})
+.catch(err => {
+  alert("Error càmera: " + err);
+});
+
+// =======================
+// 🗺️ mapa base
+// =======================
+var map = L.map('map', {
+  zoomControl: true,
+  attributionControl: false
+}).setView([42.13, 1.78], 13);
+
+// =======================
+// 🌍 OpenStreetMap (IMPORTANT)
+// =======================
+var osmLayer = L.tileLayer(
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  {
+    maxZoom: 19,
+    opacity: 0.7
+  }
+).addTo(map);
+
+// =======================
+// 🎯 carregar KML i centrar
+// =======================
+omnivore.kml(KML_FILE)
+.on('ready', function(){
+    const layer = this;
+    layer.eachLayer(function(l){
+        if(l.setStyle){
+            l.setStyle({
+                fill: false,
+                fillOpacity: 0,
+                color: "#FFAA00",
+                weight: 3,
+                opacity: 0.8
+            });
+        }
+    });
+    map.addLayer(layer);
+
+    setTimeout(()=>{
+        const bounds = layer.getBounds();
+        if(bounds.isValid()){ map.fitBounds(bounds, { maxZoom: 17 }); }
+    }, 100);
+})
+.on('error', function(e){
+    console.error("Error carregant KML", e);
+});
+
+// =======================
+// 🎚️ slider transparència
+// =======================
+document.getElementById("opacity").addEventListener("input", function(e) {
+  osmLayer.setOpacity(e.target.value);
+});
+</script>
+
+</body>
+</html>
