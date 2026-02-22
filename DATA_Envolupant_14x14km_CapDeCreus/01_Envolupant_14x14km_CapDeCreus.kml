@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="01_envolupant_14x14km_capdecreus" id="01_envolupant_14x14km_capdecreus">
+	<SimpleField name="id" type="float"></SimpleField>
+</Schema>
+<Folder><name>01_envolupant_14x14km_capdecreus</name>
+  <Placemark>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+      <MultiGeometry><Polygon><outerBoundaryIs><LinearRing><coordinates>3.16271330532268,42.3567515876117 3.33271020976714,42.3563843205931 3.33204725139995,42.2302995678693 3.16238907726016,42.2306652255662 3.16271330532268,42.3567515876117</coordinates></LinearRing></outerBoundaryIs></Polygon></MultiGeometry>
+  </Placemark>
+</Folder>
+</Document></kml>
