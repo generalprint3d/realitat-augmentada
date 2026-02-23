@@ -50,6 +50,11 @@ html, body {
   color: white;
   font-family: sans-serif;
 }
+
+/* 🗂️ fer que el selector de capes sigui visible sobre el vídeo */
+.leaflet-control-layers {
+  z-index: 1000 !important;
+}
 </style>
 </head>
 
@@ -59,8 +64,8 @@ html, body {
 <div id="map"></div>
 
 <div id="controls">
-  Transparència mapa:
-  <input type="range" id="opacity" min="0" max="1" step="0.05" value="0.7">
+Transparència mapa:
+<input type="range" id="opacity" min="0" max="1" step="0.05" value="0.7">
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -88,64 +93,57 @@ var map = L.map('map', {
 // =======================
 // 🌍 capes base
 // =======================
-var topoICGC = L.tileLayer('https://geoserveis.icgc.cat/icc_mapesmultibase/noutm/wmts/topo/GRID3857/{z}/{x}/{y}.jpeg', {
-  maxZoom: 19,
-  opacity: 0.7,
-  attribution: 'ICGC'
-});
+var topoICGC = L.tileLayer(
+  'https://geoserveis.icgc.cat/icc_mapesmultibase/noutm/wmts/topo/GRID3857/{z}/{x}/{y}.jpeg',
+  { maxZoom: 19, opacity: 0.7 }
+);
 
-var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: 'OSM'
-});
+var osmLayer = L.tileLayer(
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  { maxZoom: 19, opacity: 0.7 }
+);
 
-// afegim control de capes
-var baseMaps = {
-  "Topo ICGC": topoICGC,
-  "OSM": osmLayer
-};
-L.control.layers(baseMaps).addTo(map);
-
-// per defecte posem topoICGC
+// per defecte afegim el topo ICGC
 topoICGC.addTo(map);
-
-// =======================
-// 🎯 carregar GeoJSON
-// =======================
-fetch('DATA_Cabrera_2500m/01_cabrera_2500m_4326.geojson')
-  .then(res => res.json())
-  .then(geojsonData => {
-
-    // dibuixar GeoJSON sense farciment
-    var geoLayer = L.geoJSON(geojsonData, {
-      style: {
-        color: 'red',
-        weight: 2,
-        fill: false
-      }
-    }).addTo(map);
-
-    // centrar mapa a GeoJSON
-    var bounds = geoLayer.getBounds();
-    map.fitBounds(bounds);
-
-    // coordenades aproximades de Catalunya
-    var cataloniaBounds = L.latLngBounds([41.0, 0.0], [43.0, 3.5]);
-
-    // si el GeoJSON està fora de Catalunya, posar OSM per davant
-    if (!cataloniaBounds.intersects(bounds)) {
-      map.removeLayer(topoICGC);
-      osmLayer.addTo(map);
-    }
-  })
-  .catch(err => console.error("Error carregant GeoJSON:", err));
 
 // =======================
 // 🎚️ slider transparència
 // =======================
 document.getElementById("opacity").addEventListener("input", function(e) {
   topoICGC.setOpacity(e.target.value);
+  osmLayer.setOpacity(e.target.value);
 });
+
+// =======================
+// 🗂️ selector de capes base
+// =======================
+var baseMaps = {
+  "Topo ICGC": topoICGC,
+  "OSM": osmLayer
+};
+L.control.layers(baseMaps).addTo(map);
+
+// =======================
+// 🗻 carregar GeoJSON del KML convertit
+// =======================
+fetch('01_cabrera_2500m_4326.geojson')
+.then(response => response.json())
+.then(geojsonData => {
+    // estil del poligon: sense interior, només contorn vermell
+    var geojsonLayer = L.geoJSON(geojsonData, {
+        style: function(feature) {
+            return {
+                color: 'red',
+                weight: 2,
+                fillOpacity: 0
+            };
+        }
+    }).addTo(map);
+
+    // centrar i fer zoom al GeoJSON
+    map.fitBounds(geojsonLayer.getBounds());
+})
+.catch(err => console.error("Error carregant GeoJSON:", err));
 </script>
 
 </body>
