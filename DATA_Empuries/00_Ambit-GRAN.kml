@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="00_ambitgran" id="00_ambitgran">
+	<SimpleField name="id" type="float"></SimpleField>
+</Schema>
+<Folder><name>00_ambitgran</name>
+  <Placemark>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<ExtendedData><SchemaData schemaUrl="#00_ambitgran">
+		<SimpleData name="id">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <MultiGeometry><Polygon><outerBoundaryIs><LinearRing><coordinates>3.11314900012117,42.1411109537001 3.12670264677261,42.1410967873809 3.12667751711497,42.1284877806386 3.1131265294788,42.1284855617797 3.11314900012117,42.1411109537001</coordinates></LinearRing></outerBoundaryIs></Polygon></MultiGeometry>
+  </Placemark>
+</Folder>
+</Document></kml>
