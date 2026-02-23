@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "01_Ambit_1km_x_1km",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -1.268604089113773, 40.044208705579557 ], [ -1.256886811236541, 40.044032972927155 ], [ -1.257116177706481, 40.035027409948931 ], [ -1.268831915656619, 40.035203086894541 ], [ -1.268604089113773, 40.044208705579557 ] ] ] ] } }
+]
+}
