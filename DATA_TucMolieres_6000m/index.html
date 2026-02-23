@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Realitat Augmentada Tuc de Molières 6000m de radi</title>
+<title></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
@@ -16,33 +16,30 @@ html, body {
 }
 #camera {
   position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   object-fit: cover;
-  z-index:1;
+  z-index: 1;
 }
 #map {
   position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  z-index:2;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 2;
   background: transparent;
 }
 #controls {
   position: fixed;
-  bottom:20px;
-  left:20px;
-  right:20px;
-  z-index:999;
+  bottom: 20px; left: 20px; right: 20px;
+  z-index: 999;
   background: rgba(0,0,0,0.5);
-  padding:10px;
-  border-radius:10px;
-  color:white;
-  font-family:sans-serif;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  font-family: sans-serif;
+}
+.leaflet-control-layers {
+  z-index: 1000 !important;
 }
 </style>
 </head>
@@ -58,10 +55,11 @@ Transparència mapa:
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet-omnivore/leaflet-omnivore.min.js"></script>
 
 <script>
+// =======================
 // 📷 activar càmera
+// =======================
 navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
 .then(stream => {
   document.getElementById("camera").srcObject = stream;
@@ -70,52 +68,68 @@ navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
   alert("Error càmera: " + err);
 });
 
+// =======================
+// 🗺️ títol dinàmic segons carpeta
+// =======================
+const folderName = window.location.pathname.split("/").slice(-2, -1)[0]; // nom de la carpeta
+const cleanTitle = folderName.replace(/^DATA_/, '') + " - Realitat Augmentada";
+document.title = cleanTitle;
+
+// =======================
 // 🗺️ mapa base
+// =======================
 var map = L.map('map', {
   zoomControl: true,
   attributionControl: false
 }).setView([42.13, 1.78], 13);
 
-// 🌍 OSM
-var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-  maxZoom:19,
-  opacity:0.7
-}).addTo(map);
+// =======================
+// 🌍 capes base
+// =======================
+var topoICGC = L.tileLayer(
+  'https://geoserveis.icgc.cat/icc_mapesmultibase/noutm/wmts/topo/GRID3857/{z}/{x}/{y}.jpeg',
+  { maxZoom: 19, opacity: 0.7 }
+);
 
-// Slider transparència
-const opacitySlider = document.getElementById("opacity");
-osmLayer.setOpacity(opacitySlider.value);
-opacitySlider.addEventListener("input", function(e){
+var osmLayer = L.tileLayer(
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  { maxZoom: 19, opacity: 0.7 }
+);
+
+topoICGC.addTo(map);
+
+// =======================
+// 🎚️ slider transparència
+// =======================
+document.getElementById("opacity").addEventListener("input", function(e) {
+  topoICGC.setOpacity(e.target.value);
   osmLayer.setOpacity(e.target.value);
 });
 
-// 🔹 carregar KML manualment
-// Nom del KML: escriu aquí el fitxer que tens dins la carpeta
-const KML_FILE = "01_TucMolieres-6000m.kml";
+// =======================
+// 🗂️ selector de capes base
+// =======================
+var baseMaps = {
+  "Topo ICGC": topoICGC,
+  "OSM": osmLayer
+};
+L.control.layers(baseMaps).addTo(map);
 
-omnivore.kml(KML_FILE)
-.on('ready', function() {
-    var kmlLayer = this;
-
-    // sense color interior
-    kmlLayer.eachLayer(function(layer){
-        if(layer.setStyle){
-            layer.setStyle({
-                fill: false,
-                fillOpacity: 0,
-                color: "#FFAA00",
-                weight: 3,
-                opacity: 0.8
-            });
+// =======================
+// 🗻 carregar GeoJSON automàtic (nom fix: geo.json)
+// =======================
+fetch('geo.json')
+.then(response => response.json())
+.then(geojsonData => {
+    var geojsonLayer = L.geoJSON(geojsonData, {
+        style: function(feature) {
+            return { color: 'red', weight: 2, fillOpacity: 0 };
         }
-    });
+    }).addTo(map);
 
-    map.addLayer(kmlLayer);
-    map.fitBounds(kmlLayer.getBounds());
+    map.fitBounds(geojsonLayer.getBounds());
 })
-.on('error', function(e){
-    console.error("Error carregant KML", e);
-});
+.catch(err => console.error("Error carregant GeoJSON:", err));
 </script>
 
 </body>
