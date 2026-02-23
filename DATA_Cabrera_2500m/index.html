@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>GeoAR - Cabrera 2500m</title>
+<title>Realitat Augmentada</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
@@ -51,7 +51,7 @@ html, body {
   font-family: sans-serif;
 }
 
-/* 🗂️ fer que el selector de capes sigui visible sobre el vídeo */
+/* selector visible */
 .leaflet-control-layers {
   z-index: 1000 !important;
 }
@@ -65,21 +65,33 @@ html, body {
 
 <div id="controls">
 Transparència mapa:
-<input type="range" id="opacity" min="0" max="1" step="0.05" value="0.7">
+<input type="range" id="opacity" min="0" max="1" step="0.05" value="0.4">
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
 // =======================
-// 📷 activar càmera
+// 🏷️ títol automàtic des de carpeta
+// =======================
+(function() {
+  try {
+    const pathParts = window.location.pathname.split('/');
+    const folder = pathParts[pathParts.length - 2] || "";
+    const clean = folder.replace(/^DATA_/, '').replace(/_/g, ' ');
+    document.title = clean + " - Realitat Augmentada";
+  } catch(e) {}
+})();
+
+// =======================
+// 📷 càmera
 // =======================
 navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
 .then(stream => {
   document.getElementById("camera").srcObject = stream;
 })
 .catch(err => {
-  alert("Error càmera: " + err);
+  console.warn("Camera error:", err);
 });
 
 // =======================
@@ -95,15 +107,15 @@ var map = L.map('map', {
 // =======================
 var topoICGC = L.tileLayer(
   'https://geoserveis.icgc.cat/icc_mapesmultibase/noutm/wmts/topo/GRID3857/{z}/{x}/{y}.jpeg',
-  { maxZoom: 19, opacity: 0.7 }
+  { maxZoom: 19, opacity: 0.4 }
 );
 
 var osmLayer = L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  { maxZoom: 19, opacity: 0.7 }
+  { maxZoom: 19, opacity: 0.4 }
 );
 
-// per defecte afegim el topo ICGC
+// per defecte (temporal)
 topoICGC.addTo(map);
 
 // =======================
@@ -115,35 +127,62 @@ document.getElementById("opacity").addEventListener("input", function(e) {
 });
 
 // =======================
-// 🗂️ selector de capes base
+// 🗂️ selector de capes
 // =======================
 var baseMaps = {
   "Topo ICGC": topoICGC,
   "OSM": osmLayer
 };
-L.control.layers(baseMaps).addTo(map);
+L.control.layers(baseMaps, null, { collapsed: false }).addTo(map);
 
 // =======================
-// 🗻 carregar GeoJSON del KML convertit
+// 🧭 funció: està dins Catalunya?
+// bounding box aproximat
 // =======================
-fetch('01_cabrera_2500m_4326.geojson')
-.then(response => response.json())
-.then(geojsonData => {
-    // estil del poligon: sense interior, només contorn vermell
-    var geojsonLayer = L.geoJSON(geojsonData, {
-        style: function(feature) {
-            return {
-                color: 'red',
-                weight: 2,
-                fillOpacity: 0
-            };
-        }
-    }).addTo(map);
+function isInCatalonia(bounds) {
+  const cat = {
+    minLat: 40.5,
+    maxLat: 43.0,
+    minLng: -1.0,
+    maxLng: 4.0
+  };
 
-    // centrar i fer zoom al GeoJSON
-    map.fitBounds(geojsonLayer.getBounds());
+  const center = bounds.getCenter();
+
+  return (
+    center.lat >= cat.minLat &&
+    center.lat <= cat.maxLat &&
+    center.lng >= cat.minLng &&
+    center.lng <= cat.maxLng
+  );
+}
+
+// =======================
+// 🗻 carregar GeoJSON
+// =======================
+fetch('geo.json')
+.then(r => r.json())
+.then(data => {
+
+  const layer = L.geoJSON(data, {
+    style: {
+      color: 'red',
+      weight: 2,
+      fillOpacity: 0
+    }
+  }).addTo(map);
+
+  const bounds = layer.getBounds();
+  map.fitBounds(bounds);
+
+  // 🔥 auto-selecció de capa
+  if (!isInCatalonia(bounds)) {
+    map.removeLayer(topoICGC);
+    osmLayer.addTo(map);
+  }
+
 })
-.catch(err => console.error("Error carregant GeoJSON:", err));
+.catch(err => console.error("Error GeoJSON:", err));
 </script>
 
 </body>
