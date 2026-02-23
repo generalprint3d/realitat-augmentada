@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Realitat Augmentada Cabrera 2500 m de radi</title>
+<title>Cabrera 2500m - GeoAR ICGC</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
@@ -14,35 +14,41 @@ html, body {
   overflow: hidden;
   background: black;
 }
+
+/* 📷 càmera */
 #camera {
   position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  z-index:1;
+  z-index: 1;
 }
+
+/* 🗺️ mapa */
 #map {
   position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  z-index:2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
   background: transparent;
 }
+
+/* 🎚️ controls */
 #controls {
   position: fixed;
-  bottom:20px;
-  left:20px;
-  right:20px;
-  z-index:999;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 999;
   background: rgba(0,0,0,0.5);
-  padding:10px;
-  border-radius:10px;
-  color:white;
-  font-family:sans-serif;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  font-family: sans-serif;
 }
 </style>
 </head>
@@ -58,10 +64,11 @@ Transparència mapa:
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet-omnivore/leaflet-omnivore.min.js"></script>
 
 <script>
+// =======================
 // 📷 activar càmera
+// =======================
 navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
 .then(stream => {
   document.getElementById("camera").srcObject = stream;
@@ -70,51 +77,50 @@ navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
   alert("Error càmera: " + err);
 });
 
+// =======================
 // 🗺️ mapa base
+// =======================
 var map = L.map('map', {
   zoomControl: true,
   attributionControl: false
-}).setView([42.13, 1.78], 13);
+}).setView([42.1, 2.4], 13);
 
-// 🌍 OSM
-var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-  maxZoom:19,
-  opacity:0.7
-}).addTo(map);
+// =======================
+// 🌍 Topogràfic ICGC (XYZ)
+// =======================
+var icgcTopo = L.tileLayer(
+  'https://geoserveis.icgc.cat/icc_mapesmultibase/noutm/wmts/topo/GRID3857/{z}/{x}/{y}.jpeg',
+  { maxZoom: 19, opacity: 0.7 }
+).addTo(map);
 
-// Slider transparència
-const opacitySlider = document.getElementById("opacity");
-osmLayer.setOpacity(opacitySlider.value);
-opacitySlider.addEventListener("input", function(e){
-  osmLayer.setOpacity(e.target.value);
+// =======================
+// 🎚️ slider transparència
+// =======================
+document.getElementById("opacity").addEventListener("input", function(e) {
+  icgcTopo.setOpacity(e.target.value);
 });
 
-// 🔹 carregar KML manualment
-// Nom del KML: escriu aquí el fitxer que tens dins la carpeta
-const KML_FILE = "01_Cabrera_2500m.kml";
+// =======================
+// GeoJSON local i centrat
+// =======================
+fetch('01_cabrera_2500m_4326.geojson')
+.then(response => response.json())
+.then(data => {
+  var geojsonLayer = L.geoJSON(data, {
+    style: function(feature) {
+      return {
+        color: 'blue',
+        weight: 2,
+        fillOpacity: 0 // sense interior
+      };
+    }
+  }).addTo(map);
 
-omnivore.kml(KML_FILE)
-.on('ready', function() {
-    var kmlLayer = this;
-
-    // sense color interior
-    kmlLayer.eachLayer(function(layer){
-        if(layer.setStyle){
-            layer.setStyle({
-                fill: false,
-                fillOpacity: 0,
-                color: "#FFAA00",
-                weight: 3,
-                opacity: 0.8
-            });
-        }
-    });
-
-    map.addLayer(kmlLayer);
-    map.fitBounds(kmlLayer.getBounds());
+  // Centrar i fer zoom automàtic
+  map.fitBounds(geojsonLayer.getBounds());
 })
-.on('error', function(e){
-    console.error("Error carregant KML", e);
+.catch(err => {
+  console.error("Error carregant GeoJSON:", err);
 });
 </script>
 
