@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="ambit_ametllasegarra" id="ambit_ametllasegarra">
+	<SimpleField name="id" type="float"></SimpleField>
+</Schema>
+<Folder><name>ambit_ametllasegarra</name>
+  <Placemark>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+      <MultiGeometry><Polygon><outerBoundaryIs><LinearRing><coordinates>1.22424271224672,41.5920152483378 1.27227402733082,41.5927472845404 1.27323493030657,41.5566893258575 1.22523029489203,41.5559582109325 1.22424271224672,41.5920152483378</coordinates></LinearRing></outerBoundaryIs></Polygon></MultiGeometry>
+  </Placemark>
+</Folder>
+</Document></kml>
