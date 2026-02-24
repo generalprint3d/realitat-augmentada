@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Envolupant_IllesFormigues_Batimetria",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 3.183750257195906, 41.86451519588099 ], [ 3.1897748244094, 41.864505399212909 ], [ 3.18976150879121, 41.860001981677222 ], [ 3.18373736428773, 41.860011776806388 ], [ 3.183750257195906, 41.86451519588099 ] ] ] ] } }
+]
+}
