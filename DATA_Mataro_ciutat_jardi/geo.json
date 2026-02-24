@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Envolupant_Mataro-Cartoteca",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::25831" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 453507.919999999983702, 4599991.0 ], [ 454405.919999999983702, 4599991.0 ], [ 454405.919999999983702, 4599227.0 ], [ 453507.919999999983702, 4599227.0 ], [ 453507.919999999983702, 4599991.0 ] ] ] ] } }
+]
+}
