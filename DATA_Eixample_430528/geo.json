@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "BCN_Eixample_430582",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "IDABS": "430582" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 2.162766880509905, 41.386483661714756 ], [ 2.186685480398213, 41.386655212215977 ], [ 2.18646088968647, 41.404668629253045 ], [ 2.162535686710395, 41.404496970708493 ], [ 2.162766880509905, 41.386483661714756 ] ] ] } }
+]
+}
