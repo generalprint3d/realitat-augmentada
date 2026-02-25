@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Ambit_Ejulve",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -0.558807644174161, 40.772852035867146 ], [ -0.558604114608545, 40.778408701703519 ], [ -0.54845941314416, 40.778193505648254 ], [ -0.548663786372732, 40.772636881728772 ], [ -0.558807644174161, 40.772852035867146 ] ] ] ] } }
+]
+}
