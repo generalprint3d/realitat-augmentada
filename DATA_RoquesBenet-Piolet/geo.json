@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Full-lidar_274530",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 0.316645331787497, 40.907899194749724 ], [ 0.340367317789699, 40.90844910646085 ], [ 0.341088619748901, 40.890451757753162 ], [ 0.317373048500379, 40.88990219267253 ], [ 0.316645331787497, 40.907899194749724 ] ] ] ] } }
+]
+}
