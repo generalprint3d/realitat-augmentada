@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Lleida_Mosaic_MDS_Sol_Edi_2m-MASK",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 0.59882461480509, 41.63466529546757 ], [ 0.670801711938268, 41.636147080707659 ], [ 0.672744256171158, 41.582148091299025 ], [ 0.600827049366931, 41.580669097468373 ], [ 0.59882461480509, 41.63466529546757 ] ] ] ] } }
+]
+}
