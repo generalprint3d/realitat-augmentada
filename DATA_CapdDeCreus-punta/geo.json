@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Envolupant_PuntaCapDeCreus",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 3.309824832264088, 42.325940680115409 ], [ 3.334068900425714, 42.325872611981112 ], [ 3.33398853026263, 42.310676243964494 ], [ 3.309750294493059, 42.310744276083916 ], [ 3.309824832264088, 42.325940680115409 ] ] ] ] } }
+]
+}
