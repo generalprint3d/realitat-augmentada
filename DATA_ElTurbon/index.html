@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Realitat Augmentada</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: black;
+}
+
+/* 📷 càmera */
+#camera {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* 🗺️ mapa */
+#map {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background: transparent;
+}
+
+/* 🎚️ controls */
+#controls {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 999;
+  background: rgba(0,0,0,0.5);
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  font-family: sans-serif;
+}
+
+/* selector visible */
+.leaflet-control-layers {
+  z-index: 1000 !important;
+}
+</style>
+</head>
+
+<body>
+
+<video id="camera" autoplay playsinline muted></video>
+<div id="map"></div>
+
+<div id="controls">
+Transparència mapa:
+<input type="range" id="opacity" min="0" max="1" step="0.05" value="0.4">
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+// =======================
+// 🏷️ títol automàtic des de carpeta
+// =======================
+(function() {
+  try {
+    const pathParts = window.location.pathname.split('/');
+    const folder = pathParts[pathParts.length - 2] || "";
+    const clean = folder.replace(/^DATA_/, '').replace(/_/g, ' ');
+    document.title = clean + " - Realitat Augmentada";
+  } catch(e) {}
+})();
+
+// =======================
+// 📷 càmera
+// =======================
+navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+.then(stream => {
+  document.getElementById("camera").srcObject = stream;
+})
+.catch(err => {
+  console.warn("Camera error:", err);
+});
+
+// =======================
+// 🗺️ mapa base
+// =======================
+var map = L.map('map', {
+  zoomControl: true,
+  attributionControl: false
+}).setView([42.13, 1.78], 13);
+
+// =======================
+// 🌍 capes base
+// =======================
+var topoICGC = L.tileLayer(
+  'https://geoserveis.icgc.cat/icc_mapesmultibase/noutm/wmts/topo/GRID3857/{z}/{x}/{y}.jpeg',
+  { maxZoom: 19, opacity: 0.4 }
+);
+
+var osmLayer = L.tileLayer(
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  { maxZoom: 19, opacity: 0.4 }
+);
+
+// per defecte (temporal)
+osmLayer.addTo(map);
+
+// =======================
+// 🎚️ slider transparència
+// =======================
+document.getElementById("opacity").addEventListener("input", function(e) {
+  topoICGC.setOpacity(e.target.value);
+  osmLayer.setOpacity(e.target.value);
+});
+
+// =======================
+// 🗂️ selector de capes
+// =======================
+var baseMaps = {
+  "Topo ICGC": topoICGC,
+  "OSM": osmLayer
+};
+L.control.layers(baseMaps, null, { collapsed: false }).addTo(map);
+
+// =======================
+// 🧭 funció: està dins Catalunya?
+// bounding box aproximat
+// =======================
+function isInCatalonia(bounds) {
+  const cat = {
+    minLat: 40.5,
+    maxLat: 43.0,
+    minLng: -1.0,
+    maxLng: 4.0
+  };
+
+  const center = bounds.getCenter();
+
+  return (
+    center.lat >= cat.minLat &&
+    center.lat <= cat.maxLat &&
+    center.lng >= cat.minLng &&
+    center.lng <= cat.maxLng
+  );
+}
+
+// =======================
+// 🗻 carregar GeoJSON
+// =======================
+fetch('geo.json')
+.then(r => r.json())
+.then(data => {
+
+  const layer = L.geoJSON(data, {
+    style: {
+      color: 'red',
+      weight: 2,
+      fillOpacity: 0
+    }
+  }).addTo(map);
+
+  const bounds = layer.getBounds();
+  map.fitBounds(bounds);
+
+  // 🔥 auto-selecció de capa
+  if (!isInCatalonia(bounds)) {
+    map.removeLayer(topoICGC);
+    osmLayer.addTo(map);
+  }
+
+})
+.catch(err => console.error("Error GeoJSON:", err));
+</script>
+
+</body>
+</html>
