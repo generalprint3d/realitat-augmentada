@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "01_Ambit-Gurb-Vic",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 2.194477016488815, 41.915427440930124 ], [ 2.193773866139429, 41.971263799064062 ], [ 2.268597045704472, 41.971764888253738 ], [ 2.26923495388192, 41.915927555344865 ], [ 2.194477016488815, 41.915427440930124 ] ] ] ] } }
+]
+}
