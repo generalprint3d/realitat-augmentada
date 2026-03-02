@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "MDS02_289_envolupantAOI_MASK",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "DN": 0 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 0.623785074170629, 42.095094747996583 ], [ 0.725330291111791, 42.097153604892902 ], [ 0.72745977455804, 42.037505203670086 ], [ 0.626009408330041, 42.035450622908485 ], [ 0.623785074170629, 42.095094747996583 ] ] ] ] } }
+]
+}
