@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "04_Ambit_10000x12500m",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 2.346395524848717, 42.153264989564221 ], [ 2.46742775230036, 42.153890654727938 ], [ 2.468368881258628, 42.041314094153563 ], [ 2.347550500938488, 42.040690879059383 ], [ 2.346395524848717, 42.153264989564221 ] ] ] ] } }
+]
+}
