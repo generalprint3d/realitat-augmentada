@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Montserrat_10000mx5000m",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 3 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 1.853959175546307, 41.557671064119084 ], [ 1.748307470073682, 41.599633617575726 ], [ 1.776282121781385, 41.639363086681918 ], [ 1.881981685534039, 41.597375688990802 ], [ 1.853959175546307, 41.557671064119084 ] ] ] ] } }
+]
+}
