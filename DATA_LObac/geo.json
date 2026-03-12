@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "LObac_V3",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 1.92439674409151, 41.625446224842555 ], [ 1.923422328295328, 41.683982749513056 ], [ 1.983489834241224, 41.684529774359035 ], [ 1.984409906100828, 41.625992132868603 ], [ 1.92439674409151, 41.625446224842555 ] ] ] ] } }
+]
+}
