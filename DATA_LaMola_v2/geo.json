@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "LaMolaStLlorenc_V2",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 2.000083172350256, 41.621625995553828 ], [ 1.999526114014626, 41.65764943356853 ], [ 2.03555258104117, 41.65795739445803 ], [ 2.036089587752793, 41.621933569340733 ], [ 2.000083172350256, 41.621625995553828 ] ] ] ] } }
+]
+}
