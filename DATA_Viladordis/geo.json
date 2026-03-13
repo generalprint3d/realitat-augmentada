@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Viladordis_1x1km",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 1.852361004096411, 41.727428965149834 ], [ 1.864382174109147, 41.727548409113389 ], [ 1.864540744556324, 41.718543078098854 ], [ 1.852521252210155, 41.718423671672518 ], [ 1.852361004096411, 41.727428965149834 ] ] ] ] } }
+]
+}
