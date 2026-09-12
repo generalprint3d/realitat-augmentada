@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "MDS2x2_Pica-2026-4326",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 1.339965197621836, 42.615015751942444 ], [ 1.338048475492317, 42.687030553063181 ], [ 1.435666049873338, 42.688405627252841 ], [ 1.437470305256616, 42.616387385200426 ], [ 1.339965197621836, 42.615015751942444 ] ] ] ] } }
+]
+}

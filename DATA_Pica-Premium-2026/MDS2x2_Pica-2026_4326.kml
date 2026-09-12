@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="2026_pica" id="2026_pica">
+	<SimpleField name="id" type="float"></SimpleField>
+</Schema>
+<Folder><name>2026_pica</name>
+  <Placemark id="2026_pica.1">
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+      <MultiGeometry><Polygon><outerBoundaryIs><LinearRing><coordinates>1.33996519762184,42.6150157519424 1.33804847549232,42.6870305530632 1.43566604987334,42.6884056272528 1.43747030525662,42.6163873852004 1.33996519762184,42.6150157519424</coordinates></LinearRing></outerBoundaryIs></Polygon></MultiGeometry>
+  </Placemark>
+</Folder>
+</Document></kml>
